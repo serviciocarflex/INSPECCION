@@ -37,7 +37,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url('fondo formulario.jpg') center/cover no-repeat;
+  background: url('fondo-formulario.jpg') center/cover no-repeat;
   filter: brightness(.5) blur(4px);
   z-index: -1;
 }
@@ -64,18 +64,6 @@ body::before {
 .logo { width: 140px; height: auto; margin-bottom: 14px; }
 .header h2 { color: var(--text); font-size: 22px; margin-bottom: 4px; }
 .header p { color: var(--muted); font-size: 13px; }
-.folio-tag {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 4px 14px;
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1.5px solid #ffcba4;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .04em;
-}
 
 /* ── SECTION TITLE ── */
 .sec-title {
@@ -505,18 +493,7 @@ textarea { resize: vertical; min-height: 80px; }
   font-size: 38px;
 }
 #success-screen h3 { font-size: 22px; color: var(--text); margin-bottom: 8px; }
-#success-screen p { color: var(--muted); font-size: 14px; margin-bottom: 4px; }
-.folio-success {
-  display: inline-block;
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1.5px solid #ffcba4;
-  border-radius: 10px;
-  padding: 6px 20px;
-  font-size: 15px;
-  font-weight: 700;
-  margin: 12px 0 28px;
-}
+#success-screen p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
 #btn-volver {
   padding: 14px 40px;
   border: none;
@@ -534,26 +511,20 @@ textarea { resize: vertical; min-height: 80px; }
 <div class="card">
 
   <div class="header">
-    <img src="Logo carflex.jpg" class="logo" alt="Carflex">
+    <img src="logo-carflex.jpg" class="logo" alt="Carflex">
     <h2>Acta de Inspección de Unidad</h2>
     <p>Evaluación de estado físico y condición del vehículo</p>
-    <div class="folio-tag" id="folio-display">Generando folio...</div>
   </div>
 
-  <!-- PANTALLA ÉXITO -->
   <div id="success-screen">
     <div class="success-icon-big">✅</div>
     <h3>¡Acta enviada correctamente!</h3>
-    <p>La inspección fue registrada con folio:</p>
-    <div class="folio-success" id="success-folio">—</div>
-    <br>
+    <p>La inspección fue registrada en el sistema de manera exitosa.</p>
     <button id="btn-volver">← Nueva inspección</button>
   </div>
 
-  <!-- FORMULARIO PRINCIPAL -->
   <div id="main-form">
 
-    <!-- ESTADÍSTICAS EN TIEMPO REAL -->
     <div class="stats-row">
       <div class="stat-box">
         <div class="stat-n" id="cnt-danos">0</div>
@@ -569,7 +540,6 @@ textarea { resize: vertical; min-height: 80px; }
       </div>
     </div>
 
-    <!-- BLOQUE 1: DATOS DE LA UNIDAD -->
     <div class="sec-block">
       <div class="sec-title">🚗 Datos de la unidad</div>
       <div class="form-grid">
@@ -592,7 +562,6 @@ textarea { resize: vertical; min-height: 80px; }
       </div>
     </div>
 
-    <!-- BLOQUE 2: DIAGRAMA DE DAÑOS -->
     <div class="sec-block">
       <div class="sec-title">📍 Marcado de daños · toca el diagrama</div>
 
@@ -619,399 +588,23 @@ textarea { resize: vertical; min-height: 80px; }
       <div class="damage-list" id="damage-list"></div>
     </div>
 
-    <!-- BLOQUE 3: FOTOS -->
     <div class="sec-block">
       <div class="sec-title">📷 Fotografías de la unidad</div>
       <div class="foto-grid" id="foto-grid">
-        <!-- generadas por JS -->
-      </div>
+        </div>
       <p style="font-size:12px;color:var(--muted);margin-top:10px">Toca cada recuadro para tomar o adjuntar la foto correspondiente.</p>
     </div>
 
-    <!-- BLOQUE 4: CHECKLIST -->
     <div class="sec-block">
       <div class="sec-title">✅ Checklist de condición</div>
       <div class="checklist" id="checklist">
-        <!-- generado por JS -->
-      </div>
+        </div>
       <div style="margin-top:14px">
         <label class="field-label">Observaciones generales</label>
         <textarea id="obs" placeholder="Descripción del estado general de la unidad, condiciones especiales, etc."></textarea>
       </div>
     </div>
 
-    <!-- ENVIAR -->
     <div class="submit-wrap">
       <button class="btn-submit" id="btn-submit">Enviar acta de inspección</button>
-      <div class="msg" id="msg"></div>
-    </div>
-
-  </div><!-- /main-form -->
-</div><!-- /card -->
-
-<!-- MODAL POPUP DAÑO -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <h3>📍 Registrar daño</h3>
-    <div class="tipo-grid" id="tipo-grid">
-      <div class="tipo-btn" data-tipo="Rayón"      data-fill="#F0997B" data-stroke="#D85A30" data-tc="#7A2D12">Rayón</div>
-      <div class="tipo-btn" data-tipo="Abolladura" data-fill="#FAC775" data-stroke="#BA7517" data-tc="#5A3202">Abolladura</div>
-      <div class="tipo-btn" data-tipo="Quiebre"    data-fill="#F7C1C1" data-stroke="#E24B4A" data-tc="#7A1212">Quiebre</div>
-      <div class="tipo-btn" data-tipo="Otro"       data-fill="#CECBF6" data-stroke="#7F77DD" data-tc="#2B2480">Otro</div>
-    </div>
-    <textarea class="modal-nota" id="modal-nota" placeholder="Nota opcional (ej: puerta delantera lado conductor)..."></textarea>
-    <div class="modal-btns">
-      <button class="mbtn-cancel" id="modal-cancel">Cancelar</button>
-      <button class="mbtn-ok"     id="modal-ok">Confirmar daño</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ════════════════════════════════════
-   CONFIG — cambia solo esta URL
-   ════════════════════════════════════ */
-const WEBHOOK_URL = "https://TU-NGROK.ngrok-free.app/webhook/acta-inspeccion";
-
-/* ── FOLIO ── */
-const now = new Date();
-const pad = n => String(n).padStart(2,'0');
-const FOLIO = `ACT-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${Math.floor(Math.random()*9000+1000)}`;
-document.getElementById('folio-display').textContent = `Folio ${FOLIO}`;
-
-/* ── SVG VIEWS ── */
-const VIEWS = {
-  top: `
-    <rect x="155" y="10"  width="130" height="200" rx="22" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
-    <rect x="167" y="22"  width="106" height="40"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
-    <rect x="167" y="158" width="106" height="36"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
-    <rect x="169" y="9"   width="102" height="17"  rx="5"  fill="#f3f4f6" stroke="#e5e7eb" stroke-width=".7"/>
-    <rect x="169" y="194" width="102" height="16"  rx="5"  fill="#f3f4f6" stroke="#e5e7eb" stroke-width=".7"/>
-    <rect x="138" y="18"  width="19"  height="42"  rx="5"  fill="#374151" stroke="#1f2937" stroke-width=".8"/>
-    <rect x="283" y="18"  width="19"  height="42"  rx="5"  fill="#374151" stroke="#1f2937" stroke-width=".8"/>
-    <rect x="138" y="160" width="19"  height="42"  rx="5"  fill="#374151" stroke="#1f2937" stroke-width=".8"/>
-    <rect x="283" y="160" width="19"  height="42"  rx="5"  fill="#374151" stroke="#1f2937" stroke-width=".8"/>
-    <text x="220" y="116" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Vista superior</text>`,
-  'lat-izq': `
-    <rect x="30"  y="75"  width="380" height="70"  rx="12" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
-    <path d="M 70,75 L 120,35 L 280,35 L 350,75 Z" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1.2" />
-    <circle cx="95"  cy="145" r="22" fill="#374151" stroke="#1f2937" stroke-width="1.2"/>
-    <circle cx="95"  cy="145" r="10" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
-    <circle cx="315" cy="145" r="22" fill="#374151" stroke="#1f2937" stroke-width="1.2"/>
-    <circle cx="315" cy="145" r="10" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
-    <text x="220" y="110" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Lateral izquierdo</text>`,
-  'lat-der': `
-    <rect x="30"  y="75"  width="380" height="70"  rx="12" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
-    <path d="M 70,75 L 120,35 L 280,35 L 350,75 Z" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1.2" />
-    <circle cx="95"  cy="145" r="22" fill="#374151" stroke="#1f2937" stroke-width="1.2"/>
-    <circle cx="95"  cy="145" r="10" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
-    <circle cx="315" cy="145" r="22" fill="#374151" stroke="#1f2937" stroke-width="1.2"/>
-    <circle cx="315" cy="145" r="10" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
-    <text x="220" y="110" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Lateral derecho</text>`,
-  frontal: `
-    <rect x="100" y="45"  width="240" height="130" rx="20" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
-    <rect x="115" y="60"  width="210" height="50"  rx="6"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
-    <rect x="140" y="125" width="160" height="25"  rx="4"  fill="#374151" stroke="#e5e7eb" stroke-width=".7"/>
-    <circle cx="125" cy="137" r="10" fill="#fef08a" stroke="#facc15" />
-    <circle cx="315" cy="137" r="10" fill="#fef08a" stroke="#facc15" />
-    <text x="220" y="90" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Vista frontal</text>`,
-  trasera: `
-    <rect x="100" y="45"  width="240" height="130" rx="20" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
-    <rect x="115" y="55"  width="210" height="45"  rx="6"  fill="#374151" stroke="#d1d5db" stroke-width=".8"/>
-    <rect x="150" y="120" width="140" height="20"  rx="4"  fill="#e5e7eb" stroke="#b91c1c" stroke-width="1"/>
-    <rect x="112" y="110" width="25"  height="10"  fill="#f87171" />
-    <rect x="303" y="110" width="25"  height="10"  fill="#f87171" />
-    <text x="220" y="85" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Vista trasera</text>`
-};
-
-/* ── FOTOS CONFIG ── */
-const FOTO_SLOTS = [
-  {id:'f1', label:'Frente'},
-  {id:'f2', label:'Trasera'},
-  {id:'f3', label:'Lateral izq.'},
-  {id:'f4', label:'Lateral der.'},
-  {id:'f5', label:'Tablero'},
-  {id:'f6', label:'Km / Pantalla'},
-  {id:'f7', label:'Motor'},
-  {id:'f8', label:'Maletero'}
-];
-
-/* ── CHECKLIST CONFIG ── */
-const CHECK_ITEMS = [
-  {id:'llaves',    icon:'🔑', label:'Llaves completas'},
-  {id:'permiso',   icon:'📄', label:'Permiso de circulación'},
-  {id:'revision',  icon:'🔧', label:'Rev. técnica vigente'},
-  {id:'kit',       icon:'⚠️', label:'Kit de emergencia'},
-  {id:'neumatico', icon:'⭕', label:'Neumático de repuesto'},
-  {id:'extintor',  icon:'🔥', label:'Extintor'},
-  {id:'manual',    icon:'📖', label:'Manual del vehículo'}
-];
-
-/* ── STATE ── */
-let currentView = 'top';
-let damages = [];
-let pendingPoint = null;
-let selectedTipo = null;
-const fotosData = {};
-
-/* ════════════ RENDER DIAGRAM ════════════ */
-function renderDiagram() {
-  const svg = document.getElementById('car-svg');
-  if(!svg) return;
-  const pts = damages
-    .filter(d => d.view === currentView)
-    .map(d => `
-      <circle cx="${d.x}" cy="${d.y}" r="13" fill="${d.fill}" stroke="${d.stroke}" stroke-width="2" opacity=".92"/>
-      <text x="${d.x}" y="${d.y+4}" font-size="10" fill="${d.tc}" text-anchor="middle" font-weight="700" font-family="Segoe UI,sans-serif">${d.tipo[0]}</text>`)
-    .join('');
-  svg.innerHTML = (VIEWS[currentView] || '') + pts;
-}
-
-/* ── ADAPTATIVE COORD TOUCHOVER (Arreglo matemático para pantallas móviles) ── */
-function onDiagramWrapClick(e) {
-  const wrap = document.getElementById('diagram-wrap');
-  const svg = document.getElementById('car-svg');
-  const rect = wrap.getBoundingClientRect();
-  
-  // Captura el clic/toque relativo al contenedor escalado
-  const clickX = e.clientX - rect.left;
-  const clickY = e.clientY - rect.top;
-  
-  // Traduce los pixeles reales a la proporción fija 440x220 del ViewBox
-  const vb = svg.viewBox.baseVal;
-  const x = Math.round(clickX * (vb.width / rect.width));
-  const y = Math.round(clickY * (vb.height / rect.height));
-  
-  pendingPoint = {x, y, view: currentView};
-  selectedTipo = null;
-  document.querySelectorAll('.tipo-btn').forEach(b => {
-    b.classList.remove('sel');
-    b.style.cssText = '';
-  });
-  document.getElementById('modal-nota').value = '';
-  document.getElementById('modal-overlay').classList.add('show');
-}
-
-document.getElementById('diagram-wrap').onclick = onDiagramWrapClick;
-
-/* ── TABS ── */
-document.querySelectorAll('.vtab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentView = tab.dataset.view;
-    renderDiagram();
-  });
-});
-
-/* ── MODAL TIPOS ── */
-document.querySelectorAll('.tipo-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tipo-btn').forEach(b => {
-      b.classList.remove('sel');
-      b.style.cssText = '';
-    });
-    btn.classList.add('sel');
-    btn.style.background = btn.dataset.fill;
-    btn.style.borderColor = btn.dataset.stroke;
-    btn.style.color       = btn.dataset.tc;
-    selectedTipo = btn.dataset;
-  });
-});
-
-document.getElementById('modal-cancel').addEventListener('click', () => {
-  document.getElementById('modal-overlay').classList.remove('show');
-  pendingPoint = null;
-});
-
-document.getElementById('modal-ok').addEventListener('click', () => {
-  if (!selectedTipo || !pendingPoint) {
-    alert('Selecciona el tipo de daño.');
-    return;
-  }
-  const nota = document.getElementById('modal-nota').value.trim();
-  damages.push({
-    ...pendingPoint,
-    tipo:   selectedTipo.tipo,
-    fill:   selectedTipo.fill,
-    stroke: selectedTipo.stroke,
-    tc:     selectedTipo.tc,
-    nota
-  });
-  document.getElementById('modal-overlay').classList.remove('show');
-  pendingPoint = null;
-  renderDiagram();
-  renderDamageList();
-  updateStats();
-});
-
-/* ── DAMAGE LIST ── */
-function renderDamageList() {
-  const list = document.getElementById('damage-list');
-  if (!damages.length) { list.innerHTML = ''; return; }
-  list.innerHTML = damages.map((d,i) => `
-    <div class="damage-item">
-      <span class="damage-tag" style="background:${d.fill};color:${d.tc};border:1.5px solid ${d.stroke}">${d.tipo}</span>
-      <span class="vista-tag">${d.view}</span>
-      ${d.nota ? `<span class="nota-txt">${d.nota}</span>` : ''}
-      <button class="del-btn" data-idx="${i}" title="Eliminar">✕</button>
-    </div>`).join('');
-  
-  list.querySelectorAll('.del-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      damages.splice(parseInt(btn.dataset.idx), 1);
-      renderDamageList();
-      renderDiagram();
-      updateStats();
-    });
-  });
-}
-
-/* ════════════ FOTO SLOTS ════════════ */
-const fotoGrid = document.getElementById('foto-grid');
-FOTO_SLOTS.forEach(slot => {
-  const div = document.createElement('div');
-  div.className = 'foto-slot';
-  div.id = 'slot-' + slot.id;
-  div.innerHTML = `
-    <img class="preview-img" id="prev-${slot.id}">
-    <span class="slot-icon">📷</span>
-    <span class="slot-name">${slot.label}</span>
-    <input type="file" id="inp-${slot.id}" accept="image/jpeg,image/png" capture="environment">
-    <button type="button" class="rm-btn" data-sid="${slot.id}">✕</button>`;
-  fotoGrid.appendChild(div);
-
-  document.getElementById('inp-' + slot.id).addEventListener('change', function() {
-    const file = this.files[0];
-    if (!file) return;
-    const slotEl = document.getElementById('slot-' + slot.id);
-    const prev   = document.getElementById('prev-' + slot.id);
-    prev.src = URL.createObjectURL(file);
-    prev.style.display = 'block';
-    slotEl.querySelector('.slot-icon').style.display = 'none';
-    slotEl.querySelector('.slot-name').textContent = slot.label + ' ✓';
-    slotEl.classList.add('filled');
-    fotosData[slot.id] = file;
-    updateStats();
-  });
-});
-
-document.addEventListener('click', e => {
-  if (e.target.classList.contains('rm-btn') && e.target.dataset.sid) {
-    e.stopPropagation();
-    const sid  = e.target.dataset.sid;
-    const slt  = FOTO_SLOTS.find(s => s.id === sid);
-    const slotEl = document.getElementById('slot-' + sid);
-    const prev   = document.getElementById('prev-' + sid);
-    const inp    = document.getElementById('inp-'  + sid);
-    if(inp) inp.value = '';
-    if(prev) { prev.src = ''; prev.style.display = 'none'; }
-    slotEl.querySelector('.slot-icon').style.display = '';
-    slotEl.querySelector('.slot-name').textContent = slt.label;
-    slotEl.classList.remove('filled');
-    delete fotosData[sid];
-    updateStats();
-  }
-});
-
-/* ════════════ CHECKLIST ════════════ */
-const checklistEl = document.getElementById('checklist');
-CHECK_ITEMS.forEach(item => {
-  const row = document.createElement('div');
-  row.className = 'check-row';
-  row.dataset.item = item.id;
-  row.innerHTML = `
-    <div class="check-left">
-      <span class="icon">${item.icon}</span>
-      <span>${item.label}</span>
-    </div>
-    <div class="check-toggle">
-      <button class="cbtn" data-val="si">Sí</button>
-      <button class="cbtn" data-val="no">No</button>
-    </div>`;
-  checklistEl.appendChild(row);
-  row.querySelectorAll('.cbtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      row.querySelectorAll('.cbtn').forEach(b => b.className = 'cbtn');
-      btn.classList.add(btn.dataset.val);
-      updateStats();
-    });
-  });
-});
-
-/* ── STATS ── */
-function updateStats() {
-  document.getElementById('cnt-danos').textContent = damages.length;
-  document.getElementById('cnt-fotos').textContent = Object.keys(fotosData).length;
-  document.getElementById('cnt-check').textContent = document.querySelectorAll('.cbtn.si').length;
-}
-
-/* ════════════ SUBMIT ════════════ */
-document.getElementById('btn-submit').addEventListener('click', async () => {
-  const msg  = document.getElementById('msg');
-  const btn  = document.getElementById('btn-submit');
-  const patente   = document.getElementById('patente').value.trim().toUpperCase();
-  const km        = document.getElementById('km').value.trim();
-  const inspector = document.getElementById('inspector').value.trim();
-  const sitio     = document.getElementById('sitio').value.trim();
-  const obs       = document.getElementById('obs').value.trim();
-
-  if (!patente || !km || !inspector) {
-    msg.className = 'msg error';
-    msg.innerHTML = 'Completa los campos obligatorios: Patente, Kilometraje e Inspector.';
-    return;
-  }
-
-  /* checklist */
-  const checklist = {};
-  document.querySelectorAll('.check-row').forEach(row => {
-    const si  = row.querySelector('.cbtn.si');
-    const no  = row.querySelector('.cbtn.no');
-    checklist[row.dataset.item] = si ? 'si' : no ? 'no' : 'sin_respuesta';
-  });
-
-  const formData = new FormData();
-  formData.append('folio',      FOLIO);
-  formData.append('fecha',      now.toISOString());
-  formData.append('patente',    patente);
-  formData.append('km',         km);
-  formData.append('inspector',  inspector);
-  formData.append('sitio',      sitio);
-  formData.append('observaciones', obs);
-  formData.append('danos',      JSON.stringify(damages.map(({tipo,view,x,y,nota}) => ({tipo,vista:view,x,y,nota}))));
-  formData.append('checklist',  JSON.stringify(checklist));
-
-  Object.entries(fotosData).forEach(([sid, file]) => {
-    formData.append('foto_' + sid, file);
-  });
-
-  msg.className = 'msg';
-  msg.innerHTML = '⏳ Enviando acta...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
-    if (!res.ok) throw new Error();
-
-    document.getElementById('success-folio').textContent = FOLIO;
-    document.getElementById('main-form').style.display = 'none';
-    document.getElementById('success-screen').style.display = 'block';
-
-  } catch {
-    msg.className = 'msg error';
-    msg.innerHTML = '❌ Error de conexión. Verifica el webhook e intenta nuevamente.';
-  }
-
-  btn.disabled = false;
-});
-
-/* ── VOLVER ── */
-document.getElementById('btn-volver').addEventListener('click', () => {
-  location.reload();
-});
-
-/* ── INIT ── */
-renderDiagram();
-</script>
-</body>
-</html>
+      <div class="msg"
