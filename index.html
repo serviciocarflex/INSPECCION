@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acta de Inspección | Carflex</title>
+<style>
+:root {
+  --primary: #ff7225;
+  --primary-dark: #e65a15;
+  --primary-light: #fff7ed;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --success: #166534;
+  --success-bg: #f0fdf4;
+  --success-border: #dcfce7;
+  --error-bg: #fef2f2;
+  --error-text: #b91c1c;
+  --error-border: #fee2e2;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f3f4f6;
+  padding: 24px 16px;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('fondo formulario.jpg') center/cover no-repeat;
+  filter: brightness(.5) blur(4px);
+  z-index: -1;
+}
+
+.card {
+  width: 100%;
+  max-width: 860px;
+  background: rgba(255,255,255,.98);
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: 0 25px 50px rgba(0,0,0,.3);
+}
+
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.logo { width: 140px; margin-bottom: 14px; }
+.header h2 { color: var(--text); font-size: 24px; margin-bottom: 4px; }
+.header p { color: var(--muted); font-size: 13px; }
+.folio-tag {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 14px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1.5px solid #ffcba4;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+/* ── SECTION TITLE ── */
+.sec-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.sec-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── SECTION BLOCK ── */
+.sec-block {
+  background: #fafafa;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 22px;
+}
+
+/* ── FORM GRID ── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+}
+.full { grid-column: 1 / 3; }
+
+.field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+
+input[type=text], input[type=number], select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  font-size: 15px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: white;
+  outline: none;
+  color: var(--text);
+  transition: border-color .2s, box-shadow .2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(255,114,37,.1);
+}
+textarea { resize: vertical; min-height: 80px; }
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.stat-box {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.stat-n {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.stat-l {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── VIEW TABS ── */
+.view-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.vtab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: white;
+  color: var(--muted);
+  transition: all .15s;
+}
+.vtab:hover { border-color: var(--primary); color: var(--primary); }
+.vtab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* ── CAR DIAGRAM ── */
+.diagram-wrap {
+  position: relative;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: white;
+  overflow: hidden;
+  cursor: crosshair;
+}
+.diagram-wrap svg { display: block; width: 100%; height: auto; }
+.diagram-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ── DAMAGE LEGEND ── */
+.damage-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.dleg { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); }
+.dleg-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── DAMAGE LIST ── */
+.damage-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.damage-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: white;
+  border: 1.5px solid var(--border);
+  font-size: 13px;
+  color: var(--text);
+}
+.damage-tag {
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.damage-item .vista-tag {
+  font-size: 11px;
+  color: var(--muted);
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.damage-item .nota-txt { flex: 1; color: var(--muted); font-size: 12px; }
+.damage-item .del-btn {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 16px;
+  padding: 0 4px;
+  line-height: 1;
+  background: none;
+  border: none;
+  transition: color .15s;
+}
+.damage-item .del-btn:hover { color: #ef4444; }
+
+/* ── POPUP MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+.modal h3 {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.tipo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.tipo-btn {
+  padding: 10px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  background: white;
+  color: var(--text);
+  transition: all .15s;
+}
+.tipo-btn:hover { border-color: var(--primary); }
+.tipo-btn.sel { border-width: 2px; }
+.modal-nota {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  font-size: 13px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  outline: none;
+  resize: none;
+  min-height: 60px;
+  margin-bottom: 14px;
+}
+.modal-nota:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,114,37,.1); }
+.modal-btns { display: flex; gap: 8px; }
+.modal-btns button {
+  flex: 1;
+  padding: 11px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid var(--border);
+  transition: all .15s;
+}
+.mbtn-cancel { background: white; color: var(--muted); }
+.mbtn-cancel:hover { border-color: var(--muted); }
+.mbtn-ok { background: var(--primary); color: white; border-color: var(--primary); }
+.mbtn-ok:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+
+/* ── FOTO GRID ── */
+.foto-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.foto-slot {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color .2s, background .2s;
+}
+.foto-slot:hover { border-color: var(--primary); background: var(--primary-light); }
+.foto-slot.filled { border-style: solid; border-color: var(--primary); background: var(--primary-light); }
+.foto-slot input[type=file] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.foto-slot .preview-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  display: none;
+  pointer-events: none;
+}
+.foto-slot .slot-icon { font-size: 22px; pointer-events: none; }
+.foto-slot .slot-name {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  padding: 0 4px;
+  pointer-events: none;
+}
+.foto-slot.filled .slot-name { color: var(--primary); font-weight: 600; }
+.foto-slot .rm-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.55);
+  color: white;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+  display: none;
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+}
+.foto-slot.filled .rm-btn { display: flex; }
+
+/* ── CHECKLIST ── */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: white;
+  border: 1.5px solid var(--border);
+}
+.check-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+.check-left .icon { font-size: 16px; }
+.check-toggle { display: flex; gap: 5px; }
+.cbtn {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: white;
+  color: var(--muted);
+  transition: all .15s;
+}
+.cbtn.si { background: #f0fdf4; color: #166534; border-color: #86efac; }
+.cbtn.no { background: #fef2f2; color: #b91c1c; border-color: #fca5a5; }
+
+/* ── SUBMIT ── */
+.submit-wrap { margin-top: 6px; }
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: var(--primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+.btn-submit:hover { background: var(--primary-dark); }
+.btn-submit:active { transform: scale(.99); }
+.btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+.msg {
+  margin-top: 12px;
+  font-size: 14px;
+  text-align: center;
+  min-height: 20px;
+}
+.msg.error { background: var(--error-bg); color: var(--error-text); padding: 12px; border-radius: 10px; border: 1px solid var(--error-border); }
+.msg.success { background: var(--success-bg); color: var(--success); padding: 12px; border-radius: 10px; border: 1px solid var(--success-border); }
+
+/* ── SUCCESS SCREEN ── */
+#success-screen {
+  display: none;
+  text-align: center;
+  padding: 20px 0 10px;
+}
+.success-icon-big {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #dcfce7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 38px;
+}
+#success-screen h3 { font-size: 22px; color: var(--text); margin-bottom: 8px; }
+#success-screen p { color: var(--muted); font-size: 14px; margin-bottom: 4px; }
+.folio-success {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1.5px solid #ffcba4;
+  border-radius: 10px;
+  padding: 6px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 12px 0 28px;
+}
+#btn-volver {
+  padding: 14px 40px;
+  border: none;
+  border-radius: 12px;
+  background: var(--primary);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+#btn-volver:hover { background: var(--primary-dark); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .full { grid-column: 1; }
+  .foto-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-row { grid-template-columns: repeat(3, 1fr); }
+  .view-tabs { gap: 5px; }
+  .vtab { padding: 5px 10px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="header">
+    <img src="Logo carflex.jpg" class="logo" alt="Carflex">
+    <h2>Acta de Inspección de Unidad</h2>
+    <p>Evaluación de estado físico y condición del vehículo</p>
+    <div class="folio-tag" id="folio-display">Generando folio...</div>
+  </div>
+
+  <!-- PANTALLA ÉXITO -->
+  <div id="success-screen">
+    <div class="success-icon-big">✅</div>
+    <h3>¡Acta enviada correctamente!</h3>
+    <p>La inspección fue registrada con folio:</p>
+    <div class="folio-success" id="success-folio">—</div>
+    <br>
+    <button id="btn-volver">← Nueva inspección</button>
+  </div>
+
+  <!-- FORMULARIO PRINCIPAL -->
+  <div id="main-form">
+
+    <!-- ESTADÍSTICAS EN TIEMPO REAL -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-n" id="cnt-danos">0</div>
+        <div class="stat-l">Daños marcados</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-n" id="cnt-fotos">0</div>
+        <div class="stat-l">Fotos adjuntas</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-n" id="cnt-check">0</div>
+        <div class="stat-l">Checklist ok</div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 1: DATOS DE LA UNIDAD -->
+    <div class="sec-block">
+      <div class="sec-title">🚗 Datos de la unidad</div>
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Patente</label>
+          <input type="text" id="patente" placeholder="Ej: BCDF-42" style="text-transform:uppercase;font-size:17px;letter-spacing:.06em" required>
+        </div>
+        <div>
+          <label class="field-label">Kilometraje actual</label>
+          <input type="number" id="km" placeholder="Ej: 84320" required>
+        </div>
+        <div>
+          <label class="field-label">Inspector</label>
+          <input type="text" id="inspector" placeholder="Nombre de quien inspecciona" required>
+        </div>
+        <div>
+          <label class="field-label">Sitio / Ubicación</label>
+          <input type="text" id="sitio" placeholder="Ej: Patio Norte – F12">
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 2: DIAGRAMA DE DAÑOS -->
+    <div class="sec-block">
+      <div class="sec-title">📍 Marcado de daños · toca el diagrama</div>
+
+      <div class="view-tabs" id="view-tabs">
+        <div class="vtab active" data-view="top">Superior</div>
+        <div class="vtab" data-view="lat-izq">Lateral izq.</div>
+        <div class="vtab" data-view="lat-der">Lateral der.</div>
+        <div class="vtab" data-view="frontal">Frontal</div>
+        <div class="vtab" data-view="trasera">Trasera</div>
+      </div>
+
+      <div class="diagram-wrap" id="diagram-wrap">
+        <svg id="car-svg" viewBox="0 0 440 220" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <p class="diagram-hint">Toca cualquier punto del vehículo para registrar un daño</p>
+
+      <div class="damage-legend">
+        <div class="dleg"><div class="dleg-dot" style="background:#F0997B;border:1.5px solid #D85A30"></div>Rayón</div>
+        <div class="dleg"><div class="dleg-dot" style="background:#FAC775;border:1.5px solid #BA7517"></div>Abolladura</div>
+        <div class="dleg"><div class="dleg-dot" style="background:#F7C1C1;border:1.5px solid #E24B4A"></div>Quiebre</div>
+        <div class="dleg"><div class="dleg-dot" style="background:#CECBF6;border:1.5px solid #7F77DD"></div>Otro</div>
+      </div>
+
+      <div class="damage-list" id="damage-list"></div>
+    </div>
+
+    <!-- BLOQUE 3: FOTOS -->
+    <div class="sec-block">
+      <div class="sec-title">📷 Fotografías de la unidad</div>
+      <div class="foto-grid" id="foto-grid">
+        <!-- generadas por JS -->
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px">Toca cada recuadro para tomar o adjuntar la foto correspondiente.</p>
+    </div>
+
+    <!-- BLOQUE 4: CHECKLIST -->
+    <div class="sec-block">
+      <div class="sec-title">✅ Checklist de condición</div>
+      <div class="checklist" id="checklist">
+        <!-- generado por JS -->
+      </div>
+      <div style="margin-top:14px">
+        <label class="field-label">Observaciones generales</label>
+        <textarea id="obs" placeholder="Descripción del estado general de la unidad, condiciones especiales, etc."></textarea>
+      </div>
+    </div>
+
+    <!-- ENVIAR -->
+    <div class="submit-wrap">
+      <button class="btn-submit" id="btn-submit">Enviar acta de inspección</button>
+      <div class="msg" id="msg"></div>
+    </div>
+
+  </div><!-- /main-form -->
+</div><!-- /card -->
+
+<!-- MODAL POPUP DAÑO -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>📍 Registrar daño</h3>
+    <div class="tipo-grid" id="tipo-grid">
+      <div class="tipo-btn" data-tipo="Rayón"      data-fill="#F0997B" data-stroke="#D85A30" data-tc="#7A2D12">Rayón</div>
+      <div class="tipo-btn" data-tipo="Abolladura" data-fill="#FAC775" data-stroke="#BA7517" data-tc="#5A3202">Abolladura</div>
+      <div class="tipo-btn" data-tipo="Quiebre"    data-fill="#F7C1C1" data-stroke="#E24B4A" data-tc="#7A1212">Quiebre</div>
+      <div class="tipo-btn" data-tipo="Otro"       data-fill="#CECBF6" data-stroke="#7F77DD" data-tc="#2B2480">Otro</div>
+    </div>
+    <textarea class="modal-nota" id="modal-nota" placeholder="Nota opcional (ej: puerta delantera lado conductor)..."></textarea>
+    <div class="modal-btns">
+      <button class="mbtn-cancel" id="modal-cancel">Cancelar</button>
+      <button class="mbtn-ok"     id="modal-ok">Confirmar daño</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════
+   CONFIG — cambia solo esta URL
+   ════════════════════════════════════ */
+const WEBHOOK_URL = "https://TU-NGROK.ngrok-free.app/webhook/acta-inspeccion";
+
+/* ── FOLIO ── */
+const now = new Date();
+const pad = n => String(n).padStart(2,'0');
+const FOLIO = ACT-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${Math.floor(Math.random()*9000+1000)};
+document.getElementById('folio-display').textContent = Folio ${FOLIO};
+
+/* ── SVG VIEWS ── */
+const VIEWS = {
+  top: `
+    <rect x="155" y="10"  width="130" height="200" rx="22" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
+    <rect x="167" y="22"  width="106" height="40"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="167" y="158" width="106" height="36"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="169" y="9"   width="102" height="17"  rx="5"  fill="#f3f4f6" stroke="#e5e7eb" stroke-width=".7"/>
+    <rect x="169" y="194" width="102" height="16"  rx="5"  fill="#f3f4f6" stroke="#e5e7eb" stroke-width=".7"/>
+    <rect x="138" y="18"  width="19"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="283" y="18"  width="19"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="138" y="160" width="19"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="283" y="160" width="19"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <text x="220" y="116" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Vista superior</text>`,
+  'lat-izq': `
+    <rect x="30"  y="75"  width="380" height="90"  rx="12" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
+    <ellipse cx="220" cy="75" rx="130" ry="32" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
+    <rect x="90"  y="52"  width="80"  height="38"  rx="6"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="180" y="52"  width="88"  height="38"  rx="6"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <circle cx="85"  cy="168" r="26" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1.2"/>
+    <circle cx="85"  cy="168" r="13" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
+    <circle cx="355" cy="168" r="26" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1.2"/>
+    <circle cx="355" cy="168" r="13" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="16"  y="100" width="18"  height="36"  rx="4"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="406" y="100" width="18"  height="36"  rx="4"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <text x="220" y="130" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Lateral izquierdo</text>`,
+  'lat-der': `
+    <rect x="30"  y="75"  width="380" height="90"  rx="12" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
+    <ellipse cx="220" cy="75" rx="130" ry="32" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
+    <rect x="90"  y="52"  width="80"  height="38"  rx="6"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="180" y="52"  width="88"  height="38"  rx="6"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <circle cx="85"  cy="168" r="26" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1.2"/>
+    <circle cx="85"  cy="168" r="13" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
+    <circle cx="355" cy="168" r="26" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1.2"/>
+    <circle cx="355" cy="168" r="13" fill="#f9fafb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="16"  y="100" width="18"  height="36"  rx="4"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="406" y="100" width="18"  height="36"  rx="4"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <text x="220" y="130" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Lateral derecho</text>`,
+  frontal: `
+    <rect x="100" y="45"  width="240" height="140" rx="14" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
+    <rect x="115" y="58"  width="85"  height="58"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="240" y="58"  width="85"  height="58"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="120" y="126" width="200" height="22"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="175" y="152" width="90"  height="16"  rx="4"  fill="#f3f4f6" stroke="#e5e7eb" stroke-width=".7"/>
+    <rect x="98"  y="148" width="22"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="320" y="148" width="22"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <text x="220" y="118" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Vista frontal</text>`,
+  trasera: `
+    <rect x="100" y="45"  width="240" height="140" rx="14" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
+    <rect x="115" y="58"  width="85"  height="58"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="240" y="58"  width="85"  height="58"  rx="7"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="120" y="126" width="200" height="22"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="168" y="128" width="104" height="18"  rx="4"  fill="#f3f4f6" stroke="#e5e7eb" stroke-width=".7"/>
+    <rect x="98"  y="148" width="22"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <rect x="320" y="148" width="22"  height="42"  rx="5"  fill="#e5e7eb" stroke="#d1d5db" stroke-width=".8"/>
+    <text x="220" y="118" font-size="12" fill="#9ca3af" text-anchor="middle" font-family="Segoe UI,sans-serif">Vista trasera</text>`
+};
+
+/* ── FOTOS CONFIG ── */
+const FOTO_SLOTS = [
+  {id:'f1', label:'Frente'},
+  {id:'f2', label:'Trasera'},
+  {id:'f3', label:'Lateral izq.'},
+  {id:'f4', label:'Lateral der.'},
+  {id:'f5', label:'Tablero'},
+  {id:'f6', label:'Km / Pantalla'},
+  {id:'f7', label:'Motor'},
+  {id:'f8', label:'Maletero'}
+];
+
+/* ── CHECKLIST CONFIG ── */
+const CHECK_ITEMS = [
+  {id:'llaves',    icon:'🔑', label:'Llaves completas'},
+  {id:'permiso',   icon:'📄', label:'Permiso de circulación'},
+  {id:'revision',  icon:'🔧', label:'Rev. técnica vigente'},
+  {id:'kit',       icon:'⚠️', label:'Kit de emergencia'},
+  {id:'neumatico', icon:'⭕', label:'Neumático de repuesto'},
+  {id:'extintor',  icon:'🔥', label:'Extintor'},
+  {id:'manual',    icon:'📖', label:'Manual del vehículo'}
+];
+
+/* ── STATE ── */
+let currentView = 'top';
+let damages = [];
+let pendingPoint = null;
+let selectedTipo = null;
+const fotosData = {};
+
+/* ════════════ RENDER DIAGRAM ════════════ */
+function renderDiagram() {
+  const svg = document.getElementById('car-svg');
+  const pts = damages
+    .filter(d => d.view === currentView)
+    .map(d => `
+      <circle cx="${d.x}" cy="${d.y}" r="13" fill="${d.fill}" stroke="${d.stroke}" stroke-width="2" opacity=".92"/>
+      <text x="${d.x}" y="${d.y+5}" font-size="10" fill="${d.tc}" text-anchor="middle" font-weight="700" font-family="Segoe UI,sans-serif">${d.tipo[0]}</text>`)
+    .join('');
+  svg.innerHTML = (VIEWS[currentView] || '') + pts;
+  svg.onclick = onSvgClick;
+}
+
+function onSvgClick(e) {
+  const svg = document.getElementById('car-svg');
+  const rect = svg.getBoundingClientRect();
+  const vb = svg.viewBox.baseVal;
+  const x = Math.round((e.clientX - rect.left) * (vb.width  / rect.width));
+  const y = Math.round((e.clientY - rect.top)  * (vb.height / rect.height));
+  pendingPoint = {x, y, view: currentView};
+  selectedTipo = null;
+  document.querySelectorAll('.tipo-btn').forEach(b => {
+    b.classList.remove('sel');
+    b.style.cssText = '';
+  });
+  document.getElementById('modal-nota').value = '';
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+/* ── TABS ── */
+document.querySelectorAll('.vtab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentView = tab.dataset.view;
+    renderDiagram();
+  });
+});
+
+/* ── MODAL TIPOS ── */
+document.querySelectorAll('.tipo-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tipo-btn').forEach(b => {
+      b.classList.remove('sel');
+      b.style.cssText = '';
+    });
+    btn.classList.add('sel');
+    btn.style.background = btn.dataset.fill;
+    btn.style.borderColor = btn.dataset.stroke;
+    btn.style.color       = btn.dataset.tc;
+    selectedTipo = btn.dataset;
+  });
+});
+
+document.getElementById('modal-cancel').addEventListener('click', () => {
+  document.getElementById('modal-overlay').classList.remove('show');
+  pendingPoint = null;
+});
+
+document.getElementById('modal-ok').addEventListener('click', () => {
+  if (!selectedTipo || !pendingPoint) {
+    alert('Selecciona el tipo de daño.');
+    return;
+  }
+  const nota = document.getElementById('modal-nota').value.trim();
+  damages.push({
+    ...pendingPoint,
+    tipo:   selectedTipo.tipo,
+    fill:   selectedTipo.fill,
+    stroke: selectedTipo.stroke,
+    tc:     selectedTipo.tc,
+    nota
+  });
+  document.getElementById('modal-overlay').classList.remove('show');
+  pendingPoint = null;
+  renderDiagram();
+  renderDamageList();
+  updateStats();
+});
+
+/* ── DAMAGE LIST ── */
+function renderDamageList() {
+  const list = document.getElementById('damage-list');
+  if (!damages.length) { list.innerHTML = ''; return; }
+  list.innerHTML = damages.map((d,i) => `
+    <div class="damage-item">
+      <span class="damage-tag" style="background:${d.fill};color:${d.tc};border:1.5px solid ${d.stroke}">${d.tipo}</span>
+      <span class="vista-tag">${d.view}</span>
+      ${d.nota ? <span class="nota-txt">${d.nota}</span> : ''}
+      <button class="del-btn" data-idx="${i}" title="Eliminar">✕</button>
+    </div>`).join('');
+  list.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      damages.splice(+btn.dataset.idx, 1);
+      renderDamageList();
+      renderDiagram();
+      updateStats();
+    });
+  });
+}
+
+/* ════════════ FOTO SLOTS ════════════ */
+const fotoGrid = document.getElementById('foto-grid');
+FOTO_SLOTS.forEach(slot => {
+  const div = document.createElement('div');
+  div.className = 'foto-slot';
+  div.id = 'slot-' + slot.id;
+  div.innerHTML = `
+    <img class="preview-img" id="prev-${slot.id}">
+    <span class="slot-icon">📷</span>
+    <span class="slot-name">${slot.label}</span>
+    <input type="file" id="inp-${slot.id}" accept="image/jpeg,image/png" capture="environment">
+    <button type="button" class="rm-btn" data-sid="${slot.id}">✕</button>`;
+  fotoGrid.appendChild(div);
+
+  document.getElementById('inp-' + slot.id).addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const slotEl = document.getElementById('slot-' + slot.id);
+    const prev   = document.getElementById('prev-' + slot.id);
+    prev.src = URL.createObjectURL(file);
+    prev.style.display = 'block';
+    slotEl.querySelector('.slot-icon').style.display = 'none';
+    slotEl.querySelector('.slot-name').textContent = slot.label + ' ✓';
+    slotEl.classList.add('filled');
+    fotosData[slot.id] = file;
+    updateStats();
+  });
+});
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('rm-btn') && e.target.dataset.sid) {
+    e.stopPropagation();
+    const sid  = e.target.dataset.sid;
+    const slt  = FOTO_SLOTS.find(s => s.id === sid);
+    const slotEl = document.getElementById('slot-' + sid);
+    const prev   = document.getElementById('prev-' + sid);
+    const inp    = document.getElementById('inp-'  + sid);
+    inp.value = '';
+    prev.src = ''; prev.style.display = 'none';
+    slotEl.querySelector('.slot-icon').style.display = '';
+    slotEl.querySelector('.slot-name').textContent = slt.label;
+    slotEl.classList.remove('filled');
+    delete fotosData[sid];
+    updateStats();
+  }
+});
+
+/* ════════════ CHECKLIST ════════════ */
+const checklistEl = document.getElementById('checklist');
+CHECK_ITEMS.forEach(item => {
+  const row = document.createElement('div');
+  row.className = 'check-row';
+  row.dataset.item = item.id;
+  row.innerHTML = `
+    <div class="check-left">
+      <span class="icon">${item.icon}</span>
+      <span>${item.label}</span>
+    </div>
+    <div class="check-toggle">
+      <button class="cbtn" data-val="si">Sí</button>
+      <button class="cbtn" data-val="no">No</button>
+    </div>`;
+  checklistEl.appendChild(row);
+  row.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      row.querySelectorAll('.cbtn').forEach(b => b.className = 'cbtn');
+      btn.classList.add(btn.dataset.val);
+      updateStats();
+    });
+  });
+});
+
+/* ── STATS ── */
+function updateStats() {
+  document.getElementById('cnt-danos').textContent = damages.length;
+  document.getElementById('cnt-fotos').textContent = Object.keys(fotosData).length;
+  document.getElementById('cnt-check').textContent = document.querySelectorAll('.cbtn.si').length;
+}
+
+/* ════════════ SUBMIT ════════════ */
+document.getElementById('btn-submit').addEventListener('click', async () => {
+  const msg  = document.getElementById('msg');
+  const btn  = document.getElementById('btn-submit');
+  const patente   = document.getElementById('patente').value.trim().toUpperCase();
+  const km        = document.getElementById('km').value.trim();
+  const inspector = document.getElementById('inspector').value.trim();
+  const sitio     = document.getElementById('sitio').value.trim();
+  const obs       = document.getElementById('obs').value.trim();
+
+  if (!patente || !km || !inspector) {
+    msg.className = 'msg error';
+    msg.innerHTML = 'Completa los campos obligatorios: Patente, Kilometraje e Inspector.';
+    return;
+  }
+
+  /* checklist */
+  const checklist = {};
+  document.querySelectorAll('.check-row').forEach(row => {
+    const si  = row.querySelector('.cbtn.si');
+    const no  = row.querySelector('.cbtn.no');
+    checklist[row.dataset.item] = si ? 'si' : no ? 'no' : 'sin_respuesta';
+  });
+
+  const formData = new FormData();
+  formData.append('folio',      FOLIO);
+  formData.append('fecha',      now.toISOString());
+  formData.append('patente',    patente);
+  formData.append('km',         km);
+  formData.append('inspector',  inspector);
+  formData.append('sitio',      sitio);
+  formData.append('observaciones', obs);
+  formData.append('danos',      JSON.stringify(damages.map(({tipo,view,x,y,nota}) => ({tipo,vista:view,x,y,nota}))));
+  formData.append('checklist',  JSON.stringify(checklist));
+
+  Object.entries(fotosData).forEach(([sid, file]) => {
+    formData.append('foto_' + sid, file);
+  });
+
+  msg.className = 'msg';
+  msg.innerHTML = '⏳ Enviando acta...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
+    if (!res.ok) throw new Error();
+
+    document.getElementById('success-folio').textContent = FOLIO;
+    document.getElementById('main-form').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+
+  } catch {
+    msg.className = 'msg error';
+    msg.innerHTML = '❌ Error de conexión. Verifica el webhook e intenta nuevamente.';
+  }
+
+  btn.disabled = false;
+});
+
+/* ── VOLVER ── */
+document.getElementById('btn-volver').addEventListener('click', () => {
+  location.reload();
+});
+
+/* ── INIT ── */
+renderDiagram();
+</script>
+</body>
+</html>
