@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Acta de Inspección | Carflex</title>
 <style>
 :root {
@@ -29,7 +29,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   background: #f3f4f6;
-  padding: 24px 16px;
+  padding: 16px 8px;
   position: relative;
 }
 
@@ -37,7 +37,8 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: #111827;
+  background: url('fondo formulario.jpg') center/cover no-repeat;
+  filter: brightness(.5) blur(4px);
   z-index: -1;
 }
 
@@ -46,17 +47,22 @@ body::before {
   max-width: 860px;
   background: rgba(255,255,255,.98);
   border-radius: 22px;
-  padding: 32px;
+  padding: 24px 16px;
   box-shadow: 0 25px 50px rgba(0,0,0,.3);
+}
+
+@media (min-width: 640px) {
+  body { padding: 24px 16px; }
+  .card { padding: 32px; }
 }
 
 /* ── HEADER ── */
 .header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
-.logo { width: 140px; margin-bottom: 14px; }
-.header h2 { color: var(--text); font-size: 24px; margin-bottom: 4px; }
+.logo { width: 140px; height: auto; margin-bottom: 14px; }
+.header h2 { color: var(--text); font-size: 22px; margin-bottom: 4px; }
 .header p { color: var(--muted); font-size: 13px; }
 .folio-tag {
   display: inline-block;
@@ -95,17 +101,25 @@ body::before {
   background: #fafafa;
   border: 1.5px solid var(--border);
   border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 22px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+@media (min-width: 640px) {
+  .sec-block { padding: 20px; }
 }
 
 /* ── FORM GRID ── */
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px 20px;
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
-.full { grid-column: 1 / 3; }
+@media (min-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+  }
+}
 
 .field-label {
   display: block;
@@ -139,44 +153,65 @@ textarea { resize: vertical; min-height: 80px; }
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 22px;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+@media (min-width: 640px) {
+  .stats-row { gap: 12px; }
 }
 .stat-box {
   background: white;
   border: 1.5px solid var(--border);
   border-radius: 14px;
-  padding: 14px 10px;
+  padding: 10px 4px;
   text-align: center;
 }
+@media (min-width: 640px) {
+  .stat-box { padding: 14px 10px; }
+}
 .stat-n {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--primary);
 }
+@media (min-width: 640px) {
+  .stat-n { font-size: 26px; }
+}
 .stat-l {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--muted);
   margin-top: 2px;
+}
+@media (min-width: 640px) {
+  .stat-l { font-size: 11px; }
 }
 
 /* ── VIEW TABS ── */
 .view-tabs {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
   margin-bottom: 14px;
 }
+@media (min-width: 640px) {
+  .view-tabs { gap: 6px; }
+}
 .vtab {
-  padding: 6px 14px;
+  flex: 1 1 calc(33.33% - 4px);
+  min-width: 80px;
+  padding: 8px 4px;
   border-radius: 20px;
   border: 1.5px solid var(--border);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
+  text-align: center;
   cursor: pointer;
   background: white;
   color: var(--muted);
   transition: all .15s;
+}
+@media (min-width: 640px) {
+  .vtab { flex: none; padding: 6px 14px; font-size: 12px; }
 }
 .vtab:hover { border-color: var(--primary); color: var(--primary); }
 .vtab.active { background: var(--primary); color: white; border-color: var(--primary); }
@@ -189,10 +224,11 @@ textarea { resize: vertical; min-height: 80px; }
   background: white;
   overflow: hidden;
   cursor: crosshair;
+  width: 100%;
   max-width: 440px;
   margin: 0 auto;
 }
-.diagram-wrap svg { display: block; width: 100%; height: auto; }
+.diagram-wrap svg { display: block; width: 100%; height: auto; pointer-events: none; }
 .diagram-hint {
   font-size: 12px;
   color: var(--muted);
@@ -203,9 +239,9 @@ textarea { resize: vertical; min-height: 80px; }
 /* ── DAMAGE LEGEND ── */
 .damage-legend {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 12px;
   justify-content: center;
 }
 .dleg { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); }
@@ -241,12 +277,11 @@ textarea { resize: vertical; min-height: 80px; }
 .damage-item .del-btn {
   cursor: pointer;
   color: var(--muted);
-  font-size: 16px;
-  padding: 0 4px;
+  font-size: 18px;
+  padding: 4px;
   line-height: 1;
   background: none;
   border: none;
-  transition: color .15s;
 }
 .damage-item .del-btn:hover { color: #ef4444; }
 
@@ -259,22 +294,18 @@ textarea { resize: vertical; min-height: 80px; }
   z-index: 100;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
 }
 .modal-overlay.show { display: flex; }
 .modal {
   background: white;
   border-radius: 20px;
-  padding: 24px;
+  padding: 20px;
   width: 100%;
   max-width: 340px;
   box-shadow: 0 20px 60px rgba(0,0,0,.25);
 }
-.modal h3 {
-  font-size: 16px;
-  color: var(--text);
-  margin-bottom: 16px;
-}
+.modal h3 { font-size: 16px; color: var(--text); margin-bottom: 14px; }
 .tipo-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -282,7 +313,7 @@ textarea { resize: vertical; min-height: 80px; }
   margin-bottom: 14px;
 }
 .tipo-btn {
-  padding: 10px;
+  padding: 12px 6px;
   border-radius: 12px;
   border: 2px solid var(--border);
   font-size: 13px;
@@ -291,10 +322,7 @@ textarea { resize: vertical; min-height: 80px; }
   text-align: center;
   background: white;
   color: var(--text);
-  transition: all .15s;
 }
-.tipo-btn:hover { border-color: var(--primary); }
-.tipo-btn.sel { border-width: 2px; }
 .modal-nota {
   width: 100%;
   padding: 10px 12px;
@@ -307,29 +335,28 @@ textarea { resize: vertical; min-height: 80px; }
   min-height: 60px;
   margin-bottom: 14px;
 }
-.modal-nota:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,114,37,.1); }
 .modal-btns { display: flex; gap: 8px; }
 .modal-btns button {
   flex: 1;
-  padding: 11px;
+  padding: 12px;
   border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   border: 2px solid var(--border);
-  transition: all .15s;
 }
 .mbtn-cancel { background: white; color: var(--muted); }
-.mbtn-cancel:hover { border-color: var(--muted); }
 .mbtn-ok { background: var(--primary); color: white; border-color: var(--primary); }
-.mbtn-ok:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
 
 /* ── FOTO GRID ── */
 .foto-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
+@media (min-width: 480px) { .foto-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .foto-grid { grid-template-columns: repeat(4, 1fr); } }
+
 .foto-slot {
   position: relative;
   aspect-ratio: 4/3;
@@ -343,9 +370,7 @@ textarea { resize: vertical; min-height: 80px; }
   gap: 4px;
   cursor: pointer;
   overflow: hidden;
-  transition: border-color .2s, background .2s;
 }
-.foto-slot:hover { border-color: var(--primary); background: var(--primary-light); }
 .foto-slot.filled { border-style: solid; border-color: var(--primary); background: var(--primary-light); }
 .foto-slot input[type=file] {
   position: absolute;
@@ -367,7 +392,7 @@ textarea { resize: vertical; min-height: 80px; }
 }
 .foto-slot .slot-icon { font-size: 22px; pointer-events: none; }
 .foto-slot .slot-name {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
   text-align: center;
   padding: 0 4px;
@@ -378,13 +403,13 @@ textarea { resize: vertical; min-height: 80px; }
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: rgba(0,0,0,.55);
+  background: rgba(0,0,0,.65);
   color: white;
   border: none;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
   display: none;
   z-index: 10;
@@ -397,12 +422,19 @@ textarea { resize: vertical; min-height: 80px; }
 .checklist { display: flex; flex-direction: column; gap: 8px; }
 .check-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
   border-radius: 12px;
   background: white;
   border: 1.5px solid var(--border);
+}
+@media (min-width: 480px) {
+  .check-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 .check-left {
   display: flex;
@@ -412,9 +444,11 @@ textarea { resize: vertical; min-height: 80px; }
   color: var(--text);
 }
 .check-left .icon { font-size: 16px; }
-.check-toggle { display: flex; gap: 5px; }
+.check-toggle { display: flex; gap: 6px; width: 100%; }
+@media (min-width: 480px) { .check-toggle { width: auto; } }
 .cbtn {
-  padding: 5px 14px;
+  flex: 1;
+  padding: 10px 14px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
@@ -422,8 +456,9 @@ textarea { resize: vertical; min-height: 80px; }
   border: 1.5px solid var(--border);
   background: white;
   color: var(--muted);
-  transition: all .15s;
+  text-align: center;
 }
+@media (min-width: 480px) { .cbtn { flex: none; min-width: 65px; padding: 6px 14px; } }
 .cbtn.si { background: #f0fdf4; color: #166534; border-color: #86efac; }
 .cbtn.no { background: #fef2f2; color: #b91c1c; border-color: #fca5a5; }
 
@@ -439,11 +474,9 @@ textarea { resize: vertical; min-height: 80px; }
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: background .2s, transform .1s;
 }
 .btn-submit:hover { background: var(--primary-dark); }
-.btn-submit:active { transform: scale(.99); }
-.btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+.btn-submit:disabled { opacity: .6; }
 
 .msg {
   margin-top: 12px;
@@ -494,18 +527,6 @@ textarea { resize: vertical; min-height: 80px; }
   font-weight: 700;
   cursor: pointer;
 }
-#btn-volver:hover { background: var(--primary-dark); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 640px) {
-  .card { padding: 20px 16px; }
-  .form-grid { grid-template-columns: 1fr; }
-  .full { grid-column: 1; }
-  .foto-grid { grid-template-columns: repeat(2, 1fr); }
-  .stats-row { grid-template-columns: repeat(3, 1fr); }
-  .view-tabs { gap: 5px; }
-  .vtab { padding: 5px 10px; font-size: 11px; }
-}
 </style>
 </head>
 <body>
@@ -513,11 +534,13 @@ textarea { resize: vertical; min-height: 80px; }
 <div class="card">
 
   <div class="header">
+    <img src="Logo carflex.jpg" class="logo" alt="Carflex">
     <h2>Acta de Inspección de Unidad</h2>
     <p>Evaluación de estado físico y condición del vehículo</p>
     <div class="folio-tag" id="folio-display">Generando folio...</div>
   </div>
 
+  <!-- PANTALLA ÉXITO -->
   <div id="success-screen">
     <div class="success-icon-big">✅</div>
     <h3>¡Acta enviada correctamente!</h3>
@@ -527,8 +550,10 @@ textarea { resize: vertical; min-height: 80px; }
     <button id="btn-volver">← Nueva inspección</button>
   </div>
 
+  <!-- FORMULARIO PRINCIPAL -->
   <div id="main-form">
 
+    <!-- ESTADÍSTICAS EN TIEMPO REAL -->
     <div class="stats-row">
       <div class="stat-box">
         <div class="stat-n" id="cnt-danos">0</div>
@@ -544,6 +569,7 @@ textarea { resize: vertical; min-height: 80px; }
       </div>
     </div>
 
+    <!-- BLOQUE 1: DATOS DE LA UNIDAD -->
     <div class="sec-block">
       <div class="sec-title">🚗 Datos de la unidad</div>
       <div class="form-grid">
@@ -566,6 +592,7 @@ textarea { resize: vertical; min-height: 80px; }
       </div>
     </div>
 
+    <!-- BLOQUE 2: DIAGRAMA DE DAÑOS -->
     <div class="sec-block">
       <div class="sec-title">📍 Marcado de daños · toca el diagrama</div>
 
@@ -592,29 +619,38 @@ textarea { resize: vertical; min-height: 80px; }
       <div class="damage-list" id="damage-list"></div>
     </div>
 
+    <!-- BLOQUE 3: FOTOS -->
     <div class="sec-block">
       <div class="sec-title">📷 Fotografías de la unidad</div>
       <div class="foto-grid" id="foto-grid">
-        </div>
+        <!-- generadas por JS -->
+      </div>
       <p style="font-size:12px;color:var(--muted);margin-top:10px">Toca cada recuadro para tomar o adjuntar la foto correspondiente.</p>
     </div>
 
+    <!-- BLOQUE 4: CHECKLIST -->
     <div class="sec-block">
       <div class="sec-title">✅ Checklist de condición</div>
       <div class="checklist" id="checklist">
-        </div>
+        <!-- generado por JS -->
+      </div>
       <div style="margin-top:14px">
         <label class="field-label">Observaciones generales</label>
         <textarea id="obs" placeholder="Descripción del estado general de la unidad, condiciones especiales, etc."></textarea>
       </div>
     </div>
 
+    <!-- ENVIAR -->
     <div class="submit-wrap">
       <button class="btn-submit" id="btn-submit">Enviar acta de inspección</button>
       <div class="msg" id="msg"></div>
     </div>
 
-  </div></div><div class="modal-overlay" id="modal-overlay">
+  </div><!-- /main-form -->
+</div><!-- /card -->
+
+<!-- MODAL POPUP DAÑO -->
+<div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <h3>📍 Registrar daño</h3>
     <div class="tipo-grid" id="tipo-grid">
@@ -643,7 +679,7 @@ const pad = n => String(n).padStart(2,'0');
 const FOLIO = `ACT-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${Math.floor(Math.random()*9000+1000)}`;
 document.getElementById('folio-display').textContent = `Folio ${FOLIO}`;
 
-/* ── SVG VIEWS (Siluetas del vehículo añadidas) ── */
+/* ── SVG VIEWS ── */
 const VIEWS = {
   top: `
     <rect x="155" y="10"  width="130" height="200" rx="22" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2"/>
@@ -731,12 +767,21 @@ function renderDiagram() {
   svg.innerHTML = (VIEWS[currentView] || '') + pts;
 }
 
-function onSvgClick(e) {
+/* ── ADAPTATIVE COORD TOUCHOVER (Arreglo matemático para pantallas móviles) ── */
+function onDiagramWrapClick(e) {
+  const wrap = document.getElementById('diagram-wrap');
   const svg = document.getElementById('car-svg');
-  const rect = svg.getBoundingClientRect();
+  const rect = wrap.getBoundingClientRect();
+  
+  // Captura el clic/toque relativo al contenedor escalado
+  const clickX = e.clientX - rect.left;
+  const clickY = e.clientY - rect.top;
+  
+  // Traduce los pixeles reales a la proporción fija 440x220 del ViewBox
   const vb = svg.viewBox.baseVal;
-  const x = Math.round((e.clientX - rect.left) * (vb.width  / rect.width));
-  const y = Math.round((e.clientY - rect.top)  * (vb.height / rect.height));
+  const x = Math.round(clickX * (vb.width / rect.width));
+  const y = Math.round(clickY * (vb.height / rect.height));
+  
   pendingPoint = {x, y, view: currentView};
   selectedTipo = null;
   document.querySelectorAll('.tipo-btn').forEach(b => {
@@ -747,7 +792,7 @@ function onSvgClick(e) {
   document.getElementById('modal-overlay').classList.add('show');
 }
 
-document.getElementById('car-svg').onclick = onSvgClick;
+document.getElementById('diagram-wrap').onclick = onDiagramWrapClick;
 
 /* ── TABS ── */
 document.querySelectorAll('.vtab').forEach(tab => {
@@ -775,7 +820,6 @@ document.querySelectorAll('.tipo-btn').forEach(btn => {
 });
 
 document.getElementById('modal-cancel').addEventListener('click', () => {
-  document.getElementById('modal-overlay').classList.remove('remove');
   document.getElementById('modal-overlay').classList.remove('show');
   pendingPoint = null;
 });
