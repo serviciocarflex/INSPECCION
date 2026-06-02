@@ -37,7 +37,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url('fondo-formulario.jpg') center/cover no-repeat;
+  background: url('fondo formulario.jpg') center/cover no-repeat;
   filter: brightness(.5) blur(4px);
   z-index: -1;
 }
@@ -64,6 +64,18 @@ body::before {
 .logo { width: 140px; height: auto; margin-bottom: 14px; }
 .header h2 { color: var(--text); font-size: 22px; margin-bottom: 4px; }
 .header p { color: var(--muted); font-size: 13px; }
+.folio-tag {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 14px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1.5px solid #ffcba4;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
 
 /* ── SECTION TITLE ── */
 .sec-title {
@@ -493,7 +505,18 @@ textarea { resize: vertical; min-height: 80px; }
   font-size: 38px;
 }
 #success-screen h3 { font-size: 22px; color: var(--text); margin-bottom: 8px; }
-#success-screen p { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+#success-screen p { color: var(--muted); font-size: 14px; margin-bottom: 4px; }
+.folio-success {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1.5px solid #ffcba4;
+  border-radius: 10px;
+  padding: 6px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 12px 0 28px;
+}
 #btn-volver {
   padding: 14px 40px;
   border: none;
@@ -511,21 +534,26 @@ textarea { resize: vertical; min-height: 80px; }
 <div class="card">
 
   <div class="header">
-    <img src="logo-carflex.jpg" class="logo" alt="Carflex">
+    <img src="Logo carflex.jpg" class="logo" alt="Carflex">
     <h2>Acta de Inspección de Unidad</h2>
     <p>Evaluación de estado físico y condición del vehículo</p>
+    <div class="folio-tag" id="folio-display">Generando folio...</div>
   </div>
 
+  <!-- PANTALLA ÉXITO -->
   <div id="success-screen">
     <div class="success-icon-big">✅</div>
     <h3>¡Acta enviada correctamente!</h3>
-    <p>La inspección fue registrada de manera exitosa.</p>
+    <p>La inspección fue registrada con folio:</p>
+    <div class="folio-success" id="success-folio">—</div>
     <br>
     <button id="btn-volver">← Nueva inspección</button>
   </div>
 
+  <!-- FORMULARIO PRINCIPAL -->
   <div id="main-form">
 
+    <!-- ESTADÍSTICAS EN TIEMPO REAL -->
     <div class="stats-row">
       <div class="stat-box">
         <div class="stat-n" id="cnt-danos">0</div>
@@ -541,6 +569,7 @@ textarea { resize: vertical; min-height: 80px; }
       </div>
     </div>
 
+    <!-- BLOQUE 1: DATOS DE LA UNIDAD -->
     <div class="sec-block">
       <div class="sec-title">🚗 Datos de la unidad</div>
       <div class="form-grid">
@@ -563,6 +592,7 @@ textarea { resize: vertical; min-height: 80px; }
       </div>
     </div>
 
+    <!-- BLOQUE 2: DIAGRAMA DE DAÑOS -->
     <div class="sec-block">
       <div class="sec-title">📍 Marcado de daños · toca el diagrama</div>
 
@@ -589,29 +619,38 @@ textarea { resize: vertical; min-height: 80px; }
       <div class="damage-list" id="damage-list"></div>
     </div>
 
+    <!-- BLOQUE 3: FOTOS -->
     <div class="sec-block">
       <div class="sec-title">📷 Fotografías de la unidad</div>
       <div class="foto-grid" id="foto-grid">
-        </div>
+        <!-- generadas por JS -->
+      </div>
       <p style="font-size:12px;color:var(--muted);margin-top:10px">Toca cada recuadro para tomar o adjuntar la foto correspondiente.</p>
     </div>
 
+    <!-- BLOQUE 4: CHECKLIST -->
     <div class="sec-block">
       <div class="sec-title">✅ Checklist de condición</div>
       <div class="checklist" id="checklist">
-        </div>
+        <!-- generado por JS -->
+      </div>
       <div style="margin-top:14px">
         <label class="field-label">Observaciones generales</label>
         <textarea id="obs" placeholder="Descripción del estado general de la unidad, condiciones especiales, etc."></textarea>
       </div>
     </div>
 
+    <!-- ENVIAR -->
     <div class="submit-wrap">
       <button class="btn-submit" id="btn-submit">Enviar acta de inspección</button>
       <div class="msg" id="msg"></div>
     </div>
 
-  </div></div><div class="modal-overlay" id="modal-overlay">
+  </div><!-- /main-form -->
+</div><!-- /card -->
+
+<!-- MODAL POPUP DAÑO -->
+<div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <h3>📍 Registrar daño</h3>
     <div class="tipo-grid" id="tipo-grid">
@@ -634,7 +673,11 @@ textarea { resize: vertical; min-height: 80px; }
    ════════════════════════════════════ */
 const WEBHOOK_URL = "https://TU-NGROK.ngrok-free.app/webhook/acta-inspeccion";
 
+/* ── FOLIO ── */
 const now = new Date();
+const pad = n => String(n).padStart(2,'0');
+const FOLIO = `ACT-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${Math.floor(Math.random()*9000+1000)}`;
+document.getElementById('folio-display').textContent = `Folio ${FOLIO}`;
 
 /* ── SVG VIEWS ── */
 const VIEWS = {
@@ -724,14 +767,17 @@ function renderDiagram() {
   svg.innerHTML = (VIEWS[currentView] || '') + pts;
 }
 
+/* ── ADAPTATIVE COORD TOUCHOVER (Arreglo matemático para pantallas móviles) ── */
 function onDiagramWrapClick(e) {
   const wrap = document.getElementById('diagram-wrap');
   const svg = document.getElementById('car-svg');
   const rect = wrap.getBoundingClientRect();
   
+  // Captura el clic/toque relativo al contenedor escalado
   const clickX = e.clientX - rect.left;
   const clickY = e.clientY - rect.top;
   
+  // Traduce los pixeles reales a la proporción fija 440x220 del ViewBox
   const vb = svg.viewBox.baseVal;
   const x = Math.round(clickX * (vb.width / rect.width));
   const y = Math.round(clickY * (vb.height / rect.height));
@@ -916,6 +962,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     return;
   }
 
+  /* checklist */
   const checklist = {};
   document.querySelectorAll('.check-row').forEach(row => {
     const si  = row.querySelector('.cbtn.si');
@@ -924,6 +971,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   });
 
   const formData = new FormData();
+  formData.append('folio',      FOLIO);
   formData.append('fecha',      now.toISOString());
   formData.append('patente',    patente);
   formData.append('km',         km);
@@ -945,6 +993,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     const res = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
     if (!res.ok) throw new Error();
 
+    document.getElementById('success-folio').textContent = FOLIO;
     document.getElementById('main-form').style.display = 'none';
     document.getElementById('success-screen').style.display = 'block';
 
@@ -956,10 +1005,12 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   btn.disabled = false;
 });
 
+/* ── VOLVER ── */
 document.getElementById('btn-volver').addEventListener('click', () => {
   location.reload();
 });
 
+/* ── INIT ── */
 renderDiagram();
 </script>
 </body>
