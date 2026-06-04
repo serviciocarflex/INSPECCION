@@ -593,10 +593,16 @@ textarea { resize: vertical; min-height: 80px; }
     </div>
 
     <div class="sec-block">
-      <div class="sec-title">📷 Fotografías de la unidad</div>
-      <div class="foto-grid" id="foto-grid">
-        </div>
+      <div class="sec-title">📷 Fotografías externas de la unidad</div>
+      <div class="foto-grid" id="foto-grid"></div>
       <p style="font-size:12px;color:var(--muted);margin-top:10px">Toca cada recuadro para tomar o adjuntar la foto correspondiente.</p>
+    </div>
+
+    <div class="sec-block">
+      <div class="sec-title">🔍 Fotografías de daños</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Agrega fotos individuales por cada daño detectado. Puedes añadir tantas como necesites.</p>
+      <div class="foto-grid" id="dano-foto-grid"></div>
+      <button type="button" id="btn-add-dano-foto" style="margin-top:12px;padding:9px 18px;border-radius:12px;border:2px dashed var(--primary);background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;width:100%;">+ Agregar foto de daño</button>
     </div>
 
     <div class="sec-block">
@@ -695,16 +701,20 @@ const FOTO_SLOTS = [
   {id:'f3', label:'Lateral izq.'},
   {id:'f4', label:'Lateral der.'},
   {id:'f5', label:'Tablero'},
-  {id:'f6', label:'Km / Pantalla'},
-  {id:'f7', label:'Motor'},
-  {id:'f8', label:'Maletero'}
+  {id:'f6', label:'Maletero'}
 ];
 
 /* ── CHECKLIST CONFIG ── */
 const CHECK_ITEMS = [
-  {id:'kit',       icon:'⚠️', label:'Kit de emergencia'},
-  {id:'neumatico', icon:'⭕', label:'Neumático de repuesto'},
-  {id:'extintor',  icon:'🔥', label:'Extintor'}
+  {id:'kit',              icon:'⚠️', label:'Kit de emergencia'},
+  {id:'neumatico',        icon:'⭕', label:'Neumático de repuesto'},
+  {id:'extintor',         icon:'🔥', label:'Extintor'},
+  {id:'botiquin',         icon:'🩹', label:'Botiquín'},
+  {id:'triangulo',        icon:'🔺', label:'Triángulo'},
+  {id:'barra_interna',    icon:'🔩', label:'Barra interna'},
+  {id:'barra_antivuelco', icon:'🛡️', label:'Barra antivuelco'},
+  {id:'gata_llave',       icon:'🔧', label:'Gata y llave'},
+  {id:'chaleco',          icon:'🦺', label:'Chaleco reflectante'}
 ];
 
 /* ── STATE ── */
@@ -864,7 +874,55 @@ document.addEventListener('click', e => {
     delete fotosData[sid];
     updateStats();
   }
+  // Eliminar foto de daño dinámica
+  if (e.target.classList.contains('rm-dano-btn')) {
+    e.stopPropagation();
+    const sid = e.target.dataset.sid;
+    const slotEl = document.getElementById('dslot-' + sid);
+    if (slotEl) slotEl.remove();
+    delete fotosData[sid];
+    updateStats();
+  }
 });
+
+/* ════════════ FOTOS DE DAÑOS DINÁMICAS ════════════ */
+let danoCnt = 0;
+const danoFotoGrid = document.getElementById('dano-foto-grid');
+
+function addDanoFotoSlot() {
+  danoCnt++;
+  const sid = 'dano_' + danoCnt;
+  const label = 'Daño ' + danoCnt;
+  const div = document.createElement('div');
+  div.className = 'foto-slot';
+  div.id = 'dslot-' + sid;
+  div.innerHTML = `
+    <img class="preview-img" id="prev-${sid}">
+    <span class="slot-icon">📸</span>
+    <span class="slot-name">${label}</span>
+    <input type="file" id="inp-${sid}" accept="image/jpeg,image/png" capture="environment">
+    <button type="button" class="rm-dano-btn rm-btn" data-sid="${sid}" title="Eliminar">✕</button>`;
+  danoFotoGrid.appendChild(div);
+
+  document.getElementById('inp-' + sid).addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const slotEl = document.getElementById('dslot-' + sid);
+    const prev   = document.getElementById('prev-' + sid);
+    prev.src = URL.createObjectURL(file);
+    prev.style.display = 'block';
+    slotEl.querySelector('.slot-icon').style.display = 'none';
+    slotEl.querySelector('.slot-name').textContent = label + ' ✓';
+    slotEl.classList.add('filled');
+    fotosData[sid] = file;
+    updateStats();
+  });
+}
+
+// Empezar con 1 slot de daño por defecto
+addDanoFotoSlot();
+
+document.getElementById('btn-add-dano-foto').addEventListener('click', addDanoFotoSlot);
 
 /* ════════════ CHECKLIST ════════════ */
 const checklistEl = document.getElementById('checklist');
